@@ -43,7 +43,15 @@ void die (char *reason)
    fprintf(stderr, "%s\nPROGRAM ENDED\n", reason); exit(1);
 }
 
-
+/*	Design a module that takes in a single arg, char **argv,
+	that checks the sanity of the last arg passed to main()
+	returns a 1 on success or 0 otherwise. A meaningful/usage
+	error message will be printed out on failure.
+	Takes a single pointer, *argv, and passes it to isdir() 
+	to check if the directory exists. If isdir returns a 1 a 
+	1 is returned from this module. Otherwise an error message
+	is printed and a 0 is returned.
+*/
 int chkdst (/*int,*/ char **argv)
 {
    int isdir (char *path);
@@ -53,20 +61,36 @@ int chkdst (/*int,*/ char **argv)
    return 0;
 }
 
-
+/*	Design a module that takes in a single arg, char *path,
+	checks whether it is a directory or not, and returns an
+	int. 
+	Uses the Stat struct to construct a struct, sbuf,
+	and uses stat() to obtain information from the file and
+	write it to sbuf. Uses S_IFDIR() on sbuf.st_mode to see 
+	the mode of the file. A 1 is returned if the file is a 
+	directory otherwise a 0 is returned.
+*/
 int isdir (char *path)
 {
    struct stat sbuf;
    if(stat(path, &sbuf) != 0) return 0;
-   return(S_ISDIR(sbuf.st_mode));
+   return(S_IFDIR(sbuf.st_mode));
 }
 
+/*	Design a module that takes in a single arg, char *path,
+	and returns a 1 if it is a regular file or a 0 otherwise.
+	Uses the Stat struct to construct a struct, sbuf,
+	and uses stat() to obtain information from the file and
+	write it to sbuf. Uses S_IFREG on sbuf.st_mode to see if 
+	the file is regular. A 1 is returned if the S_IFREG is true
+	otherwise a 0 is returned.
 
+*/
 int isregular (char *path)
 {
    struct stat sbuf;
    stat(path, &sbuf);
-   return(S_ISREG(sbuf.st_mode));
+   return(S_IFREG(sbuf.st_mode));
 }
 
 
